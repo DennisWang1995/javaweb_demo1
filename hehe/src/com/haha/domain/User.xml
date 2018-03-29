@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.haha.domain.User">
+	
+	<resultMap type="User" autoMapping="true" id="userMap">
+		<result column="Operator_id" property="operatorId"/>
+	</resultMap>
+	
+	<select id="getAll" resultMap="userMap">
+		select * from users
+	</select>
+	
+	<select id="get" parameterType="int" resultMap="userMap">
+		select * from users where Operator_id = #{id}
+	</select>
+	
+	<insert id="add" parameterType="User">
+		insert into users values (#{operatorId},#{name},#{password},#{status})
+	</insert>
+	
+	<delete id="delete" parameterType="int">
+		delete from users where Operator_id = #{id}
+	</delete>
+	
+	<update id="update" parameterType="User">
+		update users set name=#{name},password=#{password},status=#{status} where Operator_id = #{operatorId}
+	</update>
+	
+	<select id="getByCondition" parameterType="Condition" resultMap="userMap">
+		select * from users
+		<where>
+			<if test="name != null">
+			name like '%${name}%'
+			</if>
+			<if test="status != null">
+			and status = #{status}
+			</if>
+		</where>
+	</select>
+</mapper>
